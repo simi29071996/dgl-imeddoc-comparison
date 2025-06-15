@@ -5,66 +5,61 @@
     <title>DGL vs iMedDoc Comparison</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- ✅ Load React and ReactDOM first -->
+    <!-- ✅ React & ReactDOM -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 
-    <!-- Tabletop.js for Google Sheets -->
-    <script src="https://unpkg.com/tabletop@1.5.3/tabletop.js"></script>
+    <!-- ✅ Tabletop.js (This was missing or broken) -->
+    <script src="https://unpkg.com/tabletop@1.5.1/tabletop.js"></script>
 
-    <!-- TailwindCSS for styling -->
+    <!-- ✅ Tailwind (Warning is okay for now) -->
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body class="bg-gray-50">
     <div id="root" class="p-6"></div>
 
-    <!-- ✅ Your React app script goes at the end -->
+    <!-- ✅ Your App Code -->
     <script type="text/javascript">
       const e = React.createElement;
 
       function App() {
         const [data, setData] = React.useState([]);
         const [loading, setLoading] = React.useState(true);
-
         React.useEffect(() => {
           Tabletop.init({
             key: "1OzYkdWdGyNmuw7HzKrtW8JfmhJdABUb62R3NOssiB58",
             simpleSheet: true,
-            callback: function (data) {
+            callback: (data) => {
+              console.log("✔️ Got data:", data);
               setData(data);
               setLoading(false);
-            }
+            },
           });
         }, []);
 
-        if (loading) return e("div", {}, "Loading...");
+        if (loading)
+          return e("div", { className: "text-center text-xl" }, "Loading...");
 
-        return e("div", { className: "max-w-6xl mx-auto" }, [
-          e("h1", { className: "text-3xl font-bold mb-4" }, "Feature Comparison: DGL vs iMedDoc"),
-          e("div", { className: "overflow-auto" }, [
-            e("table", { className: "min-w-full bg-white border border-gray-300" }, [
-              e("thead", {}, e("tr", { className: "bg-gray-100" }, [
-                "Category", "Feature", "DGL", "iMedDoc", "Notes"
-              ].map((text, i) =>
-                e("th", { key: i, className: "p-3 border text-left" }, text)
-              ))),
-              e("tbody", {}, data.map((row, i) =>
-                e("tr", { key: i, className: "border-t" }, [
-                  row.Category,
-                  row.Feature,
-                  row.DGL === "✓" ? "✅" : row.DGL === "✗" ? "❌" : row.DGL,
-                  row.iMedDoc === "✓" ? "✅" : row.iMedDoc === "✗" ? "❌" : row.iMedDoc,
-                  row.Notes
-                ].map((val, j) =>
-                  e("td", { key: j, className: "p-3 border" }, val)
-                ))
-              ))
-            ])
+        return e("div", { className: "max-w-4xl mx-auto" }, [
+          e("h1", { className: "text-3xl font-bold mb-4" }, "DGL vs iMedDoc Features"),
+          e("table", { className: "table-auto w-full border border-gray-300 bg-white" }, [
+            e("thead", {}, e("tr", { className: "bg-gray-200" }, [
+              "Category", "Feature", "DGL", "iMedDoc", "Notes"
+            ].map((txt, i) => e("th", { key: i, className: "p-2 border text-left" }, txt)))),
+            e("tbody", {}, data.map((row, i) =>
+              e("tr", { key: i }, [
+                row.Category,
+                row.Feature,
+                row.DGL === "✓" ? "✅" : row.DGL === "✗" ? "❌" : row.DGL || "",
+                row.iMedDoc === "✓" ? "✅" : row.iMedDoc === "✗" ? "❌" : row.iMedDoc || "",
+                row.Notes
+              ].map((val, j) => e("td", { key: j, className: "p-2 border" }, val)))
+            ))
           ])
         ]);
       }
 
-      document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener("DOMContentLoaded", () => {
         ReactDOM.createRoot(document.getElementById("root")).render(e(App));
       });
     </script>
