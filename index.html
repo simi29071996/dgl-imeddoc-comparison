@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>DGL vs iMedDoc Comparison</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script defer src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script defer src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script defer src="https://unpkg.com/tabletop@1.5.3/tabletop.js"></script>
+    <script defer src="https://cdn.tailwindcss.com"></script>
+    <script defer type="text/javascript">
+      const e = React.createElement;
+
+      function App() {
+        const [data, setData] = React.useState([]);
+        const [loading, setLoading] = React.useState(true);
+
+        React.useEffect(() => {
+          Tabletop.init({
+            key: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpN8STZUd0GDsKk_5SaBdrt640m7Zu_qEQ0ebk5Neyym4VF8KZ9LH4BesAW5ccwuR-llpJqJITTEi2/pubhtml",
+            simpleSheet: true,
+            callback: (data) => {
+              setData(data);
+              setLoading(false);
+            },
+          });
+        }, []);
+
+        if (loading) return e("div", { className: "p-6" }, "Loading...");
+
+        return e("div", { className: "p-6 max-w-6xl mx-auto" }, [
+          e("h1", { className: "text-3xl font-bold mb-4" }, "Feature Comparison: DGL vs iMedDoc"),
+          e("div", { className: "overflow-auto" }, [
+            e("table", { className: "min-w-full bg-white border border-gray-200" }, [
+              e("thead", {}, e("tr", { className: "bg-gray-100" }, [
+                "Category", "Feature", "DGL", "iMedDoc", "Notes"
+              ].map((text, i) =>
+                e("th", { key: i, className: "p-3 border text-left" }, text)
+              ))),
+              e("tbody", {}, data.map((row, i) =>
+                e("tr", { key: i, className: "border-t" }, [
+                  row.Category, row.Feature,
+                  row.DGL === "✓" ? "✅" : row.DGL === "✗" ? "❌" : row.DGL,
+                  row.iMedDoc === "✓" ? "✅" : row.iMedDoc === "✗" ? "❌" : row.iMedDoc,
+                  row.Notes,
+                ].map((val, j) =>
+                  e("td", { key: j, className: "p-3 border" }, val)
+                ))
+              ))
+            ])
+          ])
+        ]);
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        ReactDOM.createRoot(document.getElementById("root")).render(e(App));
+      });
+    </script>
+  </head>
+  <body class="bg-gray-50">
+    <div id="root"></div>
+  </body>
+</html>
