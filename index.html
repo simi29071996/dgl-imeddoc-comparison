@@ -9,59 +9,15 @@
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 
-    <!-- ✅ Tabletop.js (This was missing or broken) -->
-    <script src="https://unpkg.com/tabletop@1.5.1/tabletop.js"></script>
+    <!-- ✅ Tabletop.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js"></script>
 
-    <!-- ✅ Tailwind (Warning is okay for now) -->
+    <!-- ✅ Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="bg-gray-50">
-    <div id="root" class="p-6"></div>
 
-    <!-- ✅ Your App Code -->
+  <body class="bg-gray-100 text-gray-800">
+    <div id="root" class="max-w-4xl mx-auto mt-10 p-4 bg-white shadow-md rounded-lg"></div>
+
     <script type="text/javascript">
-      const e = React.createElement;
-
-      function App() {
-        const [data, setData] = React.useState([]);
-        const [loading, setLoading] = React.useState(true);
-        React.useEffect(() => {
-          Tabletop.init({
-            key: "1OzYkdWdGyNmuw7HzKrtW8JfmhJdABUb62R3NOssiB58",
-            simpleSheet: true,
-            callback: (data) => {
-              console.log("✔️ Got data:", data);
-              setData(data);
-              setLoading(false);
-            },
-          });
-        }, []);
-
-        if (loading)
-          return e("div", { className: "text-center text-xl" }, "Loading...");
-
-        return e("div", { className: "max-w-4xl mx-auto" }, [
-          e("h1", { className: "text-3xl font-bold mb-4" }, "DGL vs iMedDoc Features"),
-          e("table", { className: "table-auto w-full border border-gray-300 bg-white" }, [
-            e("thead", {}, e("tr", { className: "bg-gray-200" }, [
-              "Category", "Feature", "DGL", "iMedDoc", "Notes"
-            ].map((txt, i) => e("th", { key: i, className: "p-2 border text-left" }, txt)))),
-            e("tbody", {}, data.map((row, i) =>
-              e("tr", { key: i }, [
-                row.Category,
-                row.Feature,
-                row.DGL === "✓" ? "✅" : row.DGL === "✗" ? "❌" : row.DGL || "",
-                row.iMedDoc === "✓" ? "✅" : row.iMedDoc === "✗" ? "❌" : row.iMedDoc || "",
-                row.Notes
-              ].map((val, j) => e("td", { key: j, className: "p-2 border" }, val)))
-            ))
-          ])
-        ]);
-      }
-
-      document.addEventListener("DOMContentLoaded", () => {
-        ReactDOM.createRoot(document.getElementById("root")).render(e(App));
-      });
-    </script>
-  </body>
-</html>
+      const
