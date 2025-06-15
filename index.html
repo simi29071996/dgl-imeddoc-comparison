@@ -4,11 +4,21 @@
     <meta charset="UTF-8" />
     <title>DGL vs iMedDoc Comparison</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script defer src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script defer src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script defer src="https://unpkg.com/tabletop@1.5.3/tabletop.js"></script>
-    <script defer src="https://cdn.tailwindcss.com"></script>
-    <script defer type="text/javascript">
+
+    <!-- Load React first -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Load Tabletop and Tailwind -->
+    <script src="https://unpkg.com/tabletop@1.5.3/tabletop.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="bg-gray-50">
+    <div id="root"></div>
+
+    <!-- Your custom code goes last -->
+    <script>
       const e = React.createElement;
 
       function App() {
@@ -17,7 +27,7 @@
 
         React.useEffect(() => {
           Tabletop.init({
-           key: "1OzYkdWdGyNmuw7HzKrtW8JfmhJdABUb62R3NOssiB58",
+            key: "1OzYkdWdGyNmuw7HzKrtW8JfmhJdABUb62R3NOssiB58",
             simpleSheet: true,
             callback: (data) => {
               setData(data);
@@ -56,8 +66,5 @@
         ReactDOM.createRoot(document.getElementById("root")).render(e(App));
       });
     </script>
-  </head>
-  <body class="bg-gray-50">
-    <div id="root"></div>
   </body>
 </html>
